@@ -1,0 +1,59 @@
+version: '3.7'
+
+services:
+  app:
+    build: .
+    ports:
+      - "5000:5000"
+    environment:
+      - JAEGER_AGENT_HOST=jaeger
+    volumes:
+      - ./app-logs:/app/logs  # Mount logs out to host
+    depends_on:
+      - jaeger
+
+  prometheus:
+    image: prom/prometheus
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+
+  loki:
+    image: grafana/loki:2.9.1
+    ports:
+      - "3100:3100"
+    command: -config.file=/etc/loki/local-config.yaml
+    volumes:
+      - ./local-config.yaml:/etc/loki/local-config.yaml
+      - ./loki-data:/wal
+
+  promtail:
+    image: grafana/promtail:2.9.1
+    volumes:
+      - ./app-logs:/var/log/app:ro
+      - ./promtail-config.yml:/etc/promtail/promtail.yaml
+    command: -config.file=/etc/promtail/promtail.yaml
+    depends_on:
+      - loki
+
+  grafana:
+    image: grafana/grafana
+    ports:
+      - "3000:3000"
+    depends_on:
+      - prometheus
+      - loki
+      - jaeger
+    volumes:
+      - grafana-storage:/var/lib/grafana
+      - ./grafana/provisioning:/etc/grafana/provisioning
+
+  jaeger:
+    image: jaegertracing/all-in-one:1.52
+    ports:
+      - "6831:6831/udp"
+      - "16686:16686"
+
+volumes:
+  grafana-storage:
