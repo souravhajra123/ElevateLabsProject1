@@ -1,0 +1,13 @@
+project-root/
+│
+├── app.py
+├── Dockerfile
+├── prometheus.yml
+├── docker-compose.yml
+└── grafana/
+    ├── provisioning/
+    │   ├── datasources/
+    │   │   └── datasources.yaml
+    │   └── dashboards/
+    │       ├── dashboards.yaml
+    │       └── sample-dashboard.json
