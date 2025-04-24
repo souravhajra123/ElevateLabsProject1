@@ -1,13 +1,28 @@
-project-root/
-│
-├── app.py
+Project
 ├── Dockerfile
-├── prometheus.yml
+├── app-logs
+│   └── app.log
+├── app.py
 ├── docker-compose.yml
-└── grafana/
-    ├── provisioning/
-    │   ├── datasources/
-    │   │   └── datasources.yaml
-    │   └── dashboards/
-    │       ├── dashboards.yaml
-    │       └── sample-dashboard.json
+├── grafana
+│   └── provisioning
+│       ├── dashboards
+│       │   ├── dashboards.yaml
+│       │   ├── loki-dashboard.json
+│       │   └── sample-dashboard.json
+│       └── datasources
+│           └── datasources.yaml
+├── images
+│   └── file.txt
+├── local-config.yaml
+├── loki-data
+│   ├── 00000036
+│   ├── 00000037
+│   ├── checkpoint.000035
+│   │   └── 00000000
+│   └── checkpoint.000036.tmp
+│       └── 00000000
+├── prometheus.yml
+└── promtail-config.yml
+
+9 directories, 16 files
